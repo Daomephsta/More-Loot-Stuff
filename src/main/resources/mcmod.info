@@ -1,0 +1,16 @@
+[
+{
+  "modid": "morelootstuff",
+  "name": "More Loot Stuff",
+  "description": "Adds more loot conditions, loot functions and loot entry types",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Leviathan143"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
