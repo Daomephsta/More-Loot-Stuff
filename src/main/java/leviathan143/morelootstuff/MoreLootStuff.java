@@ -1,10 +1,12 @@
 package leviathan143.morelootstuff;
 
 import leviathan143.morelootstuff.MoreLootStuff.Constants;
-import leviathan143.morelootstuff.conditions.InBiome;
+import leviathan143.morelootstuff.commands.CommandMoreLootStuff;
+import leviathan143.morelootstuff.loot.conditions.InBiome;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 public class MoreLootStuff
@@ -24,5 +26,11 @@ public class MoreLootStuff
 		LootConditionManager.registerCondition(new InBiome.Serialiser());
 		
 		//Register functions
+	}
+	
+	@Mod.EventHandler
+	public void serverInit(FMLServerStartingEvent event)
+	{
+		event.registerServerCommand(new CommandMoreLootStuff());
 	}
 }
