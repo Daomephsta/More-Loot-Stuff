@@ -1,4 +1,4 @@
-package leviathan143.morelootstuff.conditions;
+package leviathan143.morelootstuff.loot.conditions;
 
 import java.util.List;
 import java.util.Random;
