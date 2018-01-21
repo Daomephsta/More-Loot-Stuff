@@ -3,7 +3,9 @@ package leviathan143.morelootstuff;
 import leviathan143.morelootstuff.MoreLootStuff.Constants;
 import leviathan143.morelootstuff.commands.CommandMoreLootStuff;
 import leviathan143.morelootstuff.loot.conditions.InBiome;
+import leviathan143.morelootstuff.loot.conditions.gamestages.*;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -24,6 +26,12 @@ public class MoreLootStuff
 	{
 		//Register conditions
 		LootConditionManager.registerCondition(new InBiome.Serialiser());
+		if(Loader.isModLoaded("gamestages"))
+		{
+			LootConditionManager.registerCondition(new HasAllStages.Serialiser());
+			LootConditionManager.registerCondition(new HasAnyOfStages.Serialiser());
+			LootConditionManager.registerCondition(new HasStage.Serialiser());
+		}
 		
 		//Register functions
 	}
