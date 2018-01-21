@@ -27,10 +27,16 @@ minecraft {
 
 repositories 
 {  
+	maven 
+	{ 
+		name "MMD"
+		url "https://maven.mcmoddev.com/" 
+	}
 }
 
 dependencies 
 {
+	//compile "net.darkhax.gamestages:GameStages-1.12.2:1.0.75"
 }
 
 processResources

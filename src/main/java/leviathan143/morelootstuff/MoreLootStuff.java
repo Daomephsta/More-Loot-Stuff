@@ -17,7 +17,7 @@ public class MoreLootStuff
 	{
 		public static final String MODNAME = "More Loot Stuff";
 		public static final String MODID = "morelootstuff";
-		public static final String VERSION = "0.0.1";
+		public static final String VERSION = "0.0.2";
 		public static final String DEPENDENCIES = "required-after:forge@[14.23.1.2577,)";
 	}
 
