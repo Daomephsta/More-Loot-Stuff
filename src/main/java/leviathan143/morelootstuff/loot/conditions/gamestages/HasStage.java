@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.google.gson.*;
 
-import leviathan143.morelootstuff.MoreLootStuff.Constants;
+import leviathan143.morelootstuff.MoreLootStuff;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -31,7 +31,7 @@ public class HasStage implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(Constants.MODID, "has_stage"), HasStage.class);
+			super(new ResourceLocation(MoreLootStuff.MODID, "has_stage"), HasStage.class);
 		}
 
 		@Override

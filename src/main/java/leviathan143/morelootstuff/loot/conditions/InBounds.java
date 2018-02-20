@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.google.gson.*;
 
-import leviathan143.morelootstuff.MoreLootStuff.Constants;
+import leviathan143.morelootstuff.MoreLootStuff;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -41,7 +41,7 @@ public class InBounds implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(Constants.MODID, "in_bounds"), InBounds.class);
+			super(new ResourceLocation(MoreLootStuff.MODID, "in_bounds"), InBounds.class);
 		}
 
 		@Override

@@ -6,7 +6,7 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 
-import leviathan143.morelootstuff.MoreLootStuff.Constants;
+import leviathan143.morelootstuff.MoreLootStuff;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +39,7 @@ public class InBiome implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(Constants.MODID, "in_biome"), InBiome.class);
+			super(new ResourceLocation(MoreLootStuff.MODID, "in_biome"), InBiome.class);
 		}
 
 		@Override

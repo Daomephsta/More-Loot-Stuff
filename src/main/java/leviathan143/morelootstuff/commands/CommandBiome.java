@@ -1,6 +1,6 @@
 package leviathan143.morelootstuff.commands;
 
-import leviathan143.morelootstuff.MoreLootStuff.Constants;
+import leviathan143.morelootstuff.MoreLootStuff;
 import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
@@ -17,7 +17,7 @@ public class CommandBiome extends CommandBase
 	@Override
 	public String getUsage(ICommandSender sender)
 	{
-		return Constants.MODID + ".commands.biome.usage";
+		return MoreLootStuff.MODID + ".commands.biome.usage";
 	}
 
 	@Override

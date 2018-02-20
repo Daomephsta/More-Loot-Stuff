@@ -1,6 +1,6 @@
 package leviathan143.morelootstuff.commands;
 
-import leviathan143.morelootstuff.MoreLootStuff.Constants;
+import leviathan143.morelootstuff.MoreLootStuff;
 import net.minecraft.command.ICommandSender;
 import net.minecraftforge.server.command.CommandTreeBase;
 
@@ -14,12 +14,12 @@ public class CommandMoreLootStuff extends CommandTreeBase
 	@Override
 	public String getName()
 	{
-		return Constants.MODID;
+		return MoreLootStuff.MODID;
 	}
 
 	@Override
 	public String getUsage(ICommandSender sender)
 	{
-		return Constants.MODID + ".commands.main_command.usage";
+		return MoreLootStuff.MODID + ".commands.main_command.usage";
 	}
 }
