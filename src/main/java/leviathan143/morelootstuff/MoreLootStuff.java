@@ -24,6 +24,7 @@ public class MoreLootStuff
 		LootConditionManager.registerCondition(new InBiome.Serialiser());
 		LootConditionManager.registerCondition(new InBounds.Serialiser());
 		LootConditionManager.registerCondition(new InDimension.Serialiser());
+		LootConditionManager.registerCondition(new KilledByRealPlayer.Serialiser());
 		if(Loader.isModLoaded("gamestages"))
 		{
 			LootConditionManager.registerCondition(new HasAllStages.Serialiser());
