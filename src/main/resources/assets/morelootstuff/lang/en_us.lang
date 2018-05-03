@@ -1,2 +1,4 @@
-morelootstuff.commands.main_command.usage=/morelootstuff <biome>
+morelootstuff.commands.main_command.usage=/morelootstuff <biome|biomeTypes>
 morelootstuff.commands.biome.usage=/morelootstuff biome
+morelootstuff.commands.biomeTypes.usage=/morelootstuff biomeTypes
+morelootstuff.commands.biomeTypes.output=%s has the types %s

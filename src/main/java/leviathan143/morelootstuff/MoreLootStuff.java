@@ -20,21 +20,22 @@ public class MoreLootStuff
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		//Register conditions
+		// Register conditions
 		LootConditionManager.registerCondition(new InBiome.Serialiser());
 		LootConditionManager.registerCondition(new InBounds.Serialiser());
 		LootConditionManager.registerCondition(new InDimension.Serialiser());
 		LootConditionManager.registerCondition(new KilledByRealPlayer.Serialiser());
-		if(Loader.isModLoaded("gamestages"))
+		LootConditionManager.registerCondition(new InBiomeOfType.Serialiser());
+		if (Loader.isModLoaded("gamestages"))
 		{
 			LootConditionManager.registerCondition(new HasAllStages.Serialiser());
 			LootConditionManager.registerCondition(new HasAnyOfStages.Serialiser());
 			LootConditionManager.registerCondition(new HasStage.Serialiser());
 		}
-		
-		//Register functions
+
+		// Register functions
 	}
-	
+
 	@Mod.EventHandler
 	public void serverInit(FMLServerStartingEvent event)
 	{

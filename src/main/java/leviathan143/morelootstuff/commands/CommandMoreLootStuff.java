@@ -9,8 +9,9 @@ public class CommandMoreLootStuff extends CommandTreeBase
 	public CommandMoreLootStuff()
 	{
 		addSubcommand(new CommandBiome());
+		addSubcommand(new CommandBiomeTypes());
 	}
-	
+
 	@Override
 	public String getName()
 	{
