@@ -26,9 +26,9 @@ public class KilledByRealPlayer implements LootCondition
 	{
 		boolean killerIsPlayer = context.getKillerPlayer() instanceof EntityPlayer;
 		boolean isFake = context.getKillerPlayer() instanceof FakePlayer;
-		return killerIsPlayer && (inverse ? isFake : !isFake); 
+		return killerIsPlayer && (inverse ? isFake : !isFake);
 	}
-	
+
 	public static class Serialiser extends LootCondition.Serializer<KilledByRealPlayer>
 	{
 		public Serialiser()

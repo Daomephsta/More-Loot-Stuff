@@ -14,7 +14,7 @@ public class CommonReflection
 		try
 		{
 			typeMapField = BiomeDictionary.Type.class.getDeclaredField("byName");
-			Field.setAccessible(new AccessibleObject[] {typeMapField}, true);
+			Field.setAccessible(new AccessibleObject[]{typeMapField}, true);
 		}
 		catch (NoSuchFieldException | SecurityException e)
 		{

@@ -31,12 +31,12 @@ public class InBounds implements LootCondition
 	public boolean testCondition(Random rand, LootContext context)
 	{
 		Entity posReference = context.getLootedEntity() != null ? context.getLootedEntity() : context.getKillerPlayer();
-		if(posReference == null) return false;
+		if (posReference == null) return false;
 		return (posReference.posX >= minX && posReference.posX <= maxX)
 				&& (posReference.posY >= minY && posReference.posY <= maxY)
-				&& (posReference.posZ >= minZ && posReference.posZ <= maxZ);  
+				&& (posReference.posZ >= minZ && posReference.posZ <= maxZ);
 	}
-	
+
 	public static class Serialiser extends LootCondition.Serializer<InBounds>
 	{
 		public Serialiser()
@@ -58,12 +58,10 @@ public class InBounds implements LootCondition
 		@Override
 		public InBounds deserialize(JsonObject json, JsonDeserializationContext context)
 		{
-			int minX = JsonUtils.getInt(json, "minX", -WORLD_SIZE), 
-				minY = JsonUtils.getInt(json, "minY", 0), 
-				minZ = JsonUtils.getInt(json, "minZ", -WORLD_SIZE),
-				maxX = JsonUtils.getInt(json, "maxX", WORLD_SIZE), 
-				maxY = JsonUtils.getInt(json, "maxY", 255), 
-				maxZ = JsonUtils.getInt(json, "maxZ", WORLD_SIZE);
+			int minX = JsonUtils.getInt(json, "minX", -WORLD_SIZE), minY = JsonUtils.getInt(json, "minY", 0),
+					minZ = JsonUtils.getInt(json, "minZ", -WORLD_SIZE),
+					maxX = JsonUtils.getInt(json, "maxX", WORLD_SIZE), maxY = JsonUtils.getInt(json, "maxY", 255),
+					maxZ = JsonUtils.getInt(json, "maxZ", WORLD_SIZE);
 			return new InBounds(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 	}

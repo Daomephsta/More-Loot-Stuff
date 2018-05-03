@@ -16,19 +16,19 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 public class HasAllStages implements LootCondition
 {
 	private final List<String> stages;
-	
+
 	public HasAllStages(String... stages)
 	{
 		this.stages = Lists.newArrayList(stages);
 	}
-	
+
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		if(context.getKillerPlayer() == null) return false;
+		if (context.getKillerPlayer() == null) return false;
 		return PlayerDataHandler.getStageData((EntityPlayer) context.getKillerPlayer()).hasUnlockedAll(stages);
 	}
-	
+
 	public static class Serialiser extends LootCondition.Serializer<HasAllStages>
 	{
 		public Serialiser()
@@ -40,7 +40,7 @@ public class HasAllStages implements LootCondition
 		public void serialize(JsonObject json, HasAllStages value, JsonSerializationContext context)
 		{
 			JsonArray stageArray = new JsonArray();
-			for(String stage : value.stages)
+			for (String stage : value.stages)
 			{
 				stageArray.add(stage);
 			}

@@ -27,10 +27,10 @@ public class InBiome implements LootCondition
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		//If there is no looted entity(e.g chests), use the player instead
-		Entity entity = context.getLootedEntity() != null ? context.getLootedEntity() : context.getKillerPlayer();  
+		// If there is no looted entity(e.g chests), use the player instead
+		Entity entity = context.getLootedEntity() != null ? context.getLootedEntity() : context.getKillerPlayer();
 		if (entity == null) return false;
-		//The biome the entity is in
+		// The biome the entity is in
 		Biome biome = context.getWorld().getBiome(entity.getPosition());
 		return targetBiomes.contains(biome);
 	}

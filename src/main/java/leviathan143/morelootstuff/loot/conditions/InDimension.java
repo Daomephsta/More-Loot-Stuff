@@ -24,10 +24,10 @@ public class InDimension implements LootCondition
 	public boolean testCondition(Random rand, LootContext context)
 	{
 		Entity dimReference = context.getLootedEntity() != null ? context.getLootedEntity() : context.getKillerPlayer();
-		if(dimReference == null) return false;
+		if (dimReference == null) return false;
 		return dimReference.getEntityWorld().provider.getDimension() == dimensionId;
 	}
-	
+
 	public static class Serialiser extends LootCondition.Serializer<InDimension>
 	{
 		public Serialiser()

@@ -14,7 +14,7 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 public class HasStage implements LootCondition
 {
 	private final String stage;
-	
+
 	public HasStage(String stage)
 	{
 		this.stage = stage;
@@ -23,10 +23,10 @@ public class HasStage implements LootCondition
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		if(context.getKillerPlayer() == null) return false;
+		if (context.getKillerPlayer() == null) return false;
 		return PlayerDataHandler.getStageData((EntityPlayer) context.getKillerPlayer()).hasUnlockedStage(stage);
 	}
-	
+
 	public static class Serialiser extends LootCondition.Serializer<HasStage>
 	{
 		public Serialiser()
