@@ -7,6 +7,7 @@ import com.google.gson.*;
 import leviathan143.morelootstuff.MoreLootStuff;
 import net.darkhax.gamestages.capabilities.PlayerDataHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -43,7 +44,7 @@ public class HasStage implements LootCondition
 		@Override
 		public HasStage deserialize(JsonObject json, JsonDeserializationContext context)
 		{
-			return new HasStage(json.get("stage").getAsString());
+			return new HasStage(JsonUtils.getString(json, "stage"));
 		}
 	}
 }
