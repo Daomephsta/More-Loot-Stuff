@@ -1,11 +1,11 @@
 package leviathan143.morelootstuff.loot.conditions;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 
+import crafttweaker.CraftTweakerAPI;
 import leviathan143.morelootstuff.MoreLootStuff;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JsonUtils;
@@ -19,7 +19,7 @@ public class InBiome implements LootCondition
 {
 	private final List<Biome> targetBiomes;
 
-	public InBiome(Biome... targetBiomes)
+	public InBiome(Iterable<Biome> targetBiomes)
 	{
 		this.targetBiomes = Lists.newArrayList(targetBiomes);
 	}
@@ -56,16 +56,15 @@ public class InBiome implements LootCondition
 		@Override
 		public InBiome deserialize(JsonObject json, JsonDeserializationContext context)
 		{
-			JsonArray biomes = JsonUtils.getJsonArray(json, "biomes");
-			Biome[] biomeArray = new Biome[biomes.size()];
-			for (int e = 0; e < biomes.size(); e++)
+			JsonArray biomeIDs = JsonUtils.getJsonArray(json, "biomes");
+			List<Biome> biomes = new ArrayList<>();
+			for (JsonElement biomeID : biomeIDs)
 			{
-				String biomeRL = biomes.get(e).getAsString();
-				Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeRL));
-				if (biome == null) throw new JsonSyntaxException("Unknown biome '" + biomeRL + "'");
-				else biomeArray[e] = biome;
+				Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(JsonUtils.getString(biomeID, "biome id")));
+				if (biome == null) CraftTweakerAPI.logError("Unknown biome type '" + biomeID + "'");
+				else biomes.add(biome);
 			}
-			return new InBiome(biomeArray);
+			return new InBiome(biomes);
 		}
 	}
 }

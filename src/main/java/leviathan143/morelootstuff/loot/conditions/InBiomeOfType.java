@@ -5,6 +5,7 @@ import java.util.*;
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 
+import crafttweaker.CraftTweakerAPI;
 import leviathan143.morelootstuff.CommonReflection;
 import leviathan143.morelootstuff.MoreLootStuff;
 import net.minecraft.entity.Entity;
@@ -14,13 +15,12 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 
 public class InBiomeOfType implements LootCondition
 {
 	private final List<BiomeDictionary.Type> targetBiomeTypes;
 
-	public InBiomeOfType(BiomeDictionary.Type... targetBiomeTypes)
+	public InBiomeOfType(Iterable<BiomeDictionary.Type> targetBiomeTypes)
 	{
 		this.targetBiomeTypes = Lists.newArrayList(targetBiomeTypes);
 	}
@@ -61,17 +61,16 @@ public class InBiomeOfType implements LootCondition
 		@Override
 		public InBiomeOfType deserialize(JsonObject json, JsonDeserializationContext context)
 		{
-			Map<String, Type> typeMap = CommonReflection.getTypeMap();
-			JsonArray types = JsonUtils.getJsonArray(json, "types");
-			BiomeDictionary.Type[] typeArray = new BiomeDictionary.Type[types.size()];
-			for (int e = 0; e < types.size(); e++)
+			Map<String, BiomeDictionary.Type> typeMap = CommonReflection.getTypeMap();
+			JsonArray biomeTypeIDs = JsonUtils.getJsonArray(json, "types");
+			List<BiomeDictionary.Type> types = new ArrayList<>();
+			for (JsonElement typeID : biomeTypeIDs)
 			{
-				String typeName = types.get(e).getAsString();
-				BiomeDictionary.Type type = typeMap.get(typeName);
-				if (type == null) throw new JsonSyntaxException("Unknown biome type '" + typeName + "'");
-				else typeArray[e] = type;
+				BiomeDictionary.Type biomeType = typeMap.get(JsonUtils.getString(typeID, "biome type"));
+				if (biomeType == null) CraftTweakerAPI.logError("Unknown biome type '" + typeID + "'");
+				else types.add(biomeType);
 			}
-			return new InBiomeOfType(typeArray);
+			return new InBiomeOfType(types);
 		}
 	}
 }
