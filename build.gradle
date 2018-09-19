@@ -32,11 +32,21 @@ repositories
 		name "MMD"
 		url "https://maven.mcmoddev.com/" 
 	}
+    maven
+    {
+    	name "Jared"
+    	url "http://maven.blamejared.com"
+    }
+	mavenLocal()
 }
 
 dependencies 
 {
-	//compile "net.darkhax.gamestages:GameStages-1.12.2:1.0.75"
+	compile "net.darkhax.gamestages:GameStages-1.12.2:${project.gameStagesVersion}"
+	compile "net.darkhax.bookshelf:Bookshelf-1.12.2:${project.bookshelfVersion}"
+	compile "CraftTweaker2:CraftTweaker2-API:${project.craftTweakerVersion}"
+  	runtime "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${project.craftTweakerVersion}"
+  	compile "leviathan143.loottweaker:LootTweaker:1.12.2-${project.lootTweakerVersion}"
 }
 
 processResources
