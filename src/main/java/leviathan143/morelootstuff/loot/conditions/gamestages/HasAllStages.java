@@ -8,7 +8,7 @@ import com.google.common.collect.Streams;
 import com.google.gson.*;
 
 import leviathan143.morelootstuff.MoreLootStuff;
-import net.darkhax.gamestages.capabilities.PlayerDataHandler;
+import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +28,7 @@ public class HasAllStages implements LootCondition
 	public boolean testCondition(Random rand, LootContext context)
 	{
 		if (context.getKillerPlayer() == null) return false;
-		return PlayerDataHandler.getStageData((EntityPlayer) context.getKillerPlayer()).hasUnlockedAll(stages);
+		return GameStageHelper.hasAllOf((EntityPlayer) context.getKillerPlayer(), stages);
 	}
 
 	public static class Serialiser extends LootCondition.Serializer<HasAllStages>
