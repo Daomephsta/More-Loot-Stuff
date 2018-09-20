@@ -17,19 +17,19 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class MLSGameStagesConditionHelper 
 {
 	@ZenMethod
-	public static ZenLootConditionWrapper hasAllStages(String[] stages)
+	public ZenLootConditionWrapper hasAllStages(String[] stages)
 	{
 		return wrap(new HasAllStages(Arrays.asList(stages)));
 	}
 	
 	@ZenMethod
-	public static ZenLootConditionWrapper hasAnyOfStages(String[] stages)
+	public ZenLootConditionWrapper hasAnyOfStages(String[] stages)
 	{
 		return wrap(new HasAnyOfStages(Arrays.asList(stages)));
 	}
 	
 	@ZenMethod
-	public static ZenLootConditionWrapper hasStage(String stage)
+	public ZenLootConditionWrapper hasStage(String stage)
 	{
 		return wrap(new HasStage(stage));
 	}

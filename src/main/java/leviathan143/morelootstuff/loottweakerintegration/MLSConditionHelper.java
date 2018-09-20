@@ -21,7 +21,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class MLSConditionHelper 
 {
 	@ZenMethod
-	public static ZenLootConditionWrapper inBiome(String[] biomeIDs)
+	public ZenLootConditionWrapper inBiome(String[] biomeIDs)
 	{	
 		List<Biome> biomes = new ArrayList<>();
 		for (String biomeID : biomeIDs)
@@ -34,7 +34,7 @@ public class MLSConditionHelper
 	}
 
 	@ZenMethod
-	public static ZenLootConditionWrapper inBiomeOfType(String[] biomeTypeIDs)
+	public ZenLootConditionWrapper inBiomeOfType(String[] biomeTypeIDs)
 	{	
 		Map<String, BiomeDictionary.Type> typeMap = CommonReflection.getTypeMap();
 		List<BiomeDictionary.Type> types = new ArrayList<>();
@@ -48,13 +48,13 @@ public class MLSConditionHelper
 	}
 
 	@ZenMethod
-	public static ZenLootConditionWrapper inDimension(int dimensionID)
+	public ZenLootConditionWrapper inDimension(int dimensionID)
 	{
 		return wrap(new InDimension(dimensionID));
 	}
 
 	@ZenMethod
-	public static ZenLootConditionWrapper killedByRealPlayer(boolean inverse)
+	public ZenLootConditionWrapper killedByRealPlayer(boolean inverse)
 	{
 		return wrap(new KilledByRealPlayer(inverse));
 	}
