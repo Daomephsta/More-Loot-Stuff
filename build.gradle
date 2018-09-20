@@ -42,9 +42,12 @@ repositories
 
 dependencies 
 {
-	compile "net.darkhax.gamestages:GameStages-1.12.2:${project.gameStagesVersion}"
+	compile("net.darkhax.gamestages:GameStages-1.12.2:${project.gameStagesVersion}") {
+		exclude group: 'deobf.net.darkhax.bookshelf', module: 'Bookshelf-1.12.2'
+		exclude group: 'deobf.CraftTweaker2'
+	}
 	compile "net.darkhax.bookshelf:Bookshelf-1.12.2:${project.bookshelfVersion}"
-	compile "CraftTweaker2:CraftTweaker2-API:${project.craftTweakerVersion}"
+	compileOnly "CraftTweaker2:CraftTweaker2-API:${project.craftTweakerVersion}"
   	runtime "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${project.craftTweakerVersion}"
   	compile "leviathan143.loottweaker:LootTweaker:1.12.2-${project.lootTweakerVersion}"
 }
