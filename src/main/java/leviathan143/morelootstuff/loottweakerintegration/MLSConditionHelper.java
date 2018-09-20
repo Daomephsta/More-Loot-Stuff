@@ -5,6 +5,7 @@ import java.util.*;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import leviathan143.loottweaker.common.LootTweakerMain;
+import leviathan143.loottweaker.common.zenscript.ModConditionHelper;
 import leviathan143.loottweaker.common.zenscript.ZenLootConditionWrapper;
 import leviathan143.morelootstuff.CommonReflection;
 import leviathan143.morelootstuff.loot.conditions.*;
@@ -21,7 +22,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class MLSConditionHelper 
 {
 	@ZenMethod
-	public ZenLootConditionWrapper inBiome(String[] biomeIDs)
+	public static ZenLootConditionWrapper inBiome(ModConditionHelper extended, String[] biomeIDs)
 	{	
 		List<Biome> biomes = new ArrayList<>();
 		for (String biomeID : biomeIDs)
@@ -34,7 +35,7 @@ public class MLSConditionHelper
 	}
 
 	@ZenMethod
-	public ZenLootConditionWrapper inBiomeOfType(String[] biomeTypeIDs)
+	public static ZenLootConditionWrapper inBiomeOfType(ModConditionHelper extended, String[] biomeTypeIDs)
 	{	
 		Map<String, BiomeDictionary.Type> typeMap = CommonReflection.getTypeMap();
 		List<BiomeDictionary.Type> types = new ArrayList<>();
@@ -48,13 +49,13 @@ public class MLSConditionHelper
 	}
 
 	@ZenMethod
-	public ZenLootConditionWrapper inDimension(int dimensionID)
+	public static ZenLootConditionWrapper inDimension(int dimensionID)
 	{
 		return wrap(new InDimension(dimensionID));
 	}
 
 	@ZenMethod
-	public ZenLootConditionWrapper killedByRealPlayer(boolean inverse)
+	public static ZenLootConditionWrapper killedByRealPlayer(boolean inverse)
 	{
 		return wrap(new KilledByRealPlayer(inverse));
 	}

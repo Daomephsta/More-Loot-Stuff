@@ -5,6 +5,7 @@ import java.util.Arrays;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import leviathan143.loottweaker.common.LootTweakerMain;
+import leviathan143.loottweaker.common.zenscript.ModConditionHelper;
 import leviathan143.loottweaker.common.zenscript.ZenLootConditionWrapper;
 import leviathan143.morelootstuff.loot.conditions.gamestages.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -17,19 +18,19 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class MLSGameStagesConditionHelper 
 {
 	@ZenMethod
-	public ZenLootConditionWrapper hasAllStages(String[] stages)
+	public static ZenLootConditionWrapper hasAllStages(ModConditionHelper extended, String[] stages)
 	{
 		return wrap(new HasAllStages(Arrays.asList(stages)));
 	}
 	
 	@ZenMethod
-	public ZenLootConditionWrapper hasAnyOfStages(String[] stages)
+	public static ZenLootConditionWrapper hasAnyOfStages(ModConditionHelper extended, String[] stages)
 	{
 		return wrap(new HasAnyOfStages(Arrays.asList(stages)));
 	}
 	
 	@ZenMethod
-	public ZenLootConditionWrapper hasStage(String stage)
+	public static ZenLootConditionWrapper hasStage(ModConditionHelper extended, String stage)
 	{
 		return wrap(new HasStage(stage));
 	}
