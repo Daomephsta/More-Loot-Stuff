@@ -2,6 +2,9 @@ package leviathan143.morelootstuff.loot.conditions;
 
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.*;
 
 import leviathan143.morelootstuff.MoreLootStuff;
@@ -14,6 +17,8 @@ import net.minecraftforge.common.util.FakePlayer;
 
 public class KilledByRealPlayer implements LootCondition
 {
+	private static final ResourceLocation ID = new ResourceLocation(MoreLootStuff.MODID, "killed_by_real_player");
+	private static final Logger LOGGER = LogManager.getLogger(ID.toString());
 	private final boolean inverse;
 
 	public KilledByRealPlayer(boolean inverse)
@@ -24,6 +29,10 @@ public class KilledByRealPlayer implements LootCondition
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
+		if (context.getKillerPlayer() == null)
+		{
+			LOGGER.debug("No player provided by LootContext. Unable to determine killer type, returning false.");
+		}
 		boolean killerIsPlayer = context.getKillerPlayer() instanceof EntityPlayer;
 		boolean isFake = context.getKillerPlayer() instanceof FakePlayer;
 		return killerIsPlayer && (inverse ? isFake : !isFake);
@@ -33,7 +42,7 @@ public class KilledByRealPlayer implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(MoreLootStuff.MODID, "killed_by_real_player"), KilledByRealPlayer.class);
+			super(ID, KilledByRealPlayer.class);
 		}
 
 		@Override

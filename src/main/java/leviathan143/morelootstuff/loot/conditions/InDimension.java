@@ -2,6 +2,9 @@ package leviathan143.morelootstuff.loot.conditions;
 
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.*;
 
 import leviathan143.morelootstuff.MoreLootStuff;
@@ -13,6 +16,8 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 
 public class InDimension implements LootCondition
 {
+	private static final ResourceLocation ID = new ResourceLocation(MoreLootStuff.MODID, "in_dimension");
+	private static final Logger LOGGER = LogManager.getLogger(ID.toString());
 	private final int dimensionId;
 
 	public InDimension(int dimensionId)
@@ -23,8 +28,17 @@ public class InDimension implements LootCondition
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		Entity dimReference = context.getLootedEntity() != null ? context.getLootedEntity() : context.getKillerPlayer();
-		if (dimReference == null) return false;
+		Entity dimReference = context.getLootedEntity();
+		if (dimReference == null)
+		{
+			LOGGER.debug("No looted entity provided by LootContext, falling back to player.");
+			dimReference = context.getKillerPlayer();
+		}
+		if (dimReference == null)
+		{
+			LOGGER.debug("No player provided by LootContext. Unable to determine dimension, returning false.");
+			return false;
+		}
 		return dimReference.getEntityWorld().provider.getDimension() == dimensionId;
 	}
 
@@ -32,7 +46,7 @@ public class InDimension implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(MoreLootStuff.MODID, "in_dimension"), InDimension.class);
+			super(ID, InDimension.class);
 		}
 
 		@Override

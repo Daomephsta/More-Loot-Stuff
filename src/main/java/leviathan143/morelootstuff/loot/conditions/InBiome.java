@@ -2,6 +2,9 @@ package leviathan143.morelootstuff.loot.conditions;
 
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 
@@ -17,6 +20,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class InBiome implements LootCondition
 {
+	private static final ResourceLocation ID = new ResourceLocation(MoreLootStuff.MODID, "in_biome");
+	private static final Logger LOGGER = LogManager.getLogger(ID.toString());
 	private final List<Biome> targetBiomes;
 
 	public InBiome(Iterable<Biome> targetBiomes)
@@ -28,8 +33,17 @@ public class InBiome implements LootCondition
 	public boolean testCondition(Random rand, LootContext context)
 	{
 		// If there is no looted entity(e.g chests), use the player instead
-		Entity entity = context.getLootedEntity() != null ? context.getLootedEntity() : context.getKillerPlayer();
-		if (entity == null) return false;
+		Entity entity = context.getLootedEntity();
+		if (entity == null)
+		{
+			LOGGER.debug("No looted entity provided by LootContext, falling back to player.");
+			entity = context.getKillerPlayer();
+		}
+		if (entity == null)
+		{
+			LOGGER.debug("No player provided by LootContext. Unable to determine biome, returning false.");
+			return false;
+		}
 		// The biome the entity is in
 		Biome biome = context.getWorld().getBiome(entity.getPosition());
 		return targetBiomes.contains(biome);
@@ -39,7 +53,7 @@ public class InBiome implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(MoreLootStuff.MODID, "in_biome"), InBiome.class);
+			super(ID, InBiome.class);
 		}
 
 		@Override

@@ -2,6 +2,9 @@ package leviathan143.morelootstuff.loot.conditions;
 
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.Lists;
 import com.google.gson.*;
 
@@ -18,6 +21,8 @@ import net.minecraftforge.common.BiomeDictionary;
 
 public class InBiomeOfType implements LootCondition
 {
+	private static final ResourceLocation ID = new ResourceLocation(MoreLootStuff.MODID, "in_biome_of_type");
+	private static final Logger LOGGER = LogManager.getLogger(ID.toString());
 	private final List<BiomeDictionary.Type> targetBiomeTypes;
 
 	public InBiomeOfType(Iterable<BiomeDictionary.Type> targetBiomeTypes)
@@ -29,8 +34,17 @@ public class InBiomeOfType implements LootCondition
 	public boolean testCondition(Random rand, LootContext context)
 	{
 		// If there is no looted entity(e.g chests), use the player instead
-		Entity entity = context.getLootedEntity() != null ? context.getLootedEntity() : context.getKillerPlayer();
-		if (entity == null) return false;
+		Entity entity = context.getLootedEntity();
+		if (entity == null)
+		{
+			LOGGER.debug("No looted entity provided by LootContext, falling back to player.");
+			entity = context.getKillerPlayer();
+		}
+		if (entity == null)
+		{
+			LOGGER.debug("No player provided by LootContext. Unable to determine biome type, returning false.");
+			return false;
+		}
 		// The biome the entity is in
 		Biome biome = context.getWorld().getBiome(entity.getPosition());
 		for (BiomeDictionary.Type type : targetBiomeTypes)
@@ -44,7 +58,7 @@ public class InBiomeOfType implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(MoreLootStuff.MODID, "in_biome_of_type"), InBiomeOfType.class);
+			super(ID, InBiomeOfType.class);
 		}
 
 		@Override

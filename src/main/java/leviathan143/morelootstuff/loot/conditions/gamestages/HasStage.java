@@ -2,6 +2,9 @@ package leviathan143.morelootstuff.loot.conditions.gamestages;
 
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.*;
 
 import leviathan143.morelootstuff.MoreLootStuff;
@@ -14,6 +17,8 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 
 public class HasStage implements LootCondition
 {
+	private static final ResourceLocation ID = new ResourceLocation(MoreLootStuff.MODID, "has_stage");
+	private static final Logger LOGGER = LogManager.getLogger(ID.toString());
 	private final String stage;
 
 	public HasStage(String stage)
@@ -24,7 +29,11 @@ public class HasStage implements LootCondition
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		if (context.getKillerPlayer() == null) return false;
+		if (context.getKillerPlayer() == null) 
+		{
+			LOGGER.debug("No player provided by LootContext. Unable to determine granted stages, returning false.");
+			return false;
+		}
 		return GameStageHelper.hasStage((EntityPlayer) context.getKillerPlayer(), stage);
 	}
 
@@ -32,7 +41,7 @@ public class HasStage implements LootCondition
 	{
 		public Serialiser()
 		{
-			super(new ResourceLocation(MoreLootStuff.MODID, "has_stage"), HasStage.class);
+			super(ID, HasStage.class);
 		}
 
 		@Override
