@@ -1,14 +1,20 @@
 package leviathan143.morelootstuff.loot.conditions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 
-import crafttweaker.CraftTweakerAPI;
 import leviathan143.morelootstuff.CommonReflection;
 import leviathan143.morelootstuff.MoreLootStuff;
 import net.minecraft.entity.Entity;
@@ -81,7 +87,7 @@ public class InBiomeOfType implements LootCondition
 			for (JsonElement typeID : biomeTypeIDs)
 			{
 				BiomeDictionary.Type biomeType = typeMap.get(JsonUtils.getString(typeID, "biome type"));
-				if (biomeType == null) CraftTweakerAPI.logError("Unknown biome type '" + typeID + "'");
+				if (biomeType == null) LOGGER.error("Unknown biome type '{}'", typeID);
 				else types.add(biomeType);
 			}
 			return new InBiomeOfType(types);
