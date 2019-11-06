@@ -17,6 +17,7 @@ import com.google.gson.JsonSerializationContext;
 
 import leviathan143.morelootstuff.CommonReflection;
 import leviathan143.morelootstuff.MoreLootStuff;
+import leviathan143.morelootstuff.loot.TargetSelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -30,29 +31,25 @@ public class InBiomeOfType implements LootCondition
 	private static final ResourceLocation ID = new ResourceLocation(MoreLootStuff.MODID, "in_biome_of_type");
 	private static final Logger LOGGER = LogManager.getLogger(ID.toString());
 	private final List<BiomeDictionary.Type> targetBiomeTypes;
+	private final TargetSelector targetSelector;
 
-	public InBiomeOfType(Iterable<BiomeDictionary.Type> targetBiomeTypes)
+	public InBiomeOfType(Iterable<BiomeDictionary.Type> targetBiomeTypes, TargetSelector targetSelector)
 	{
 		this.targetBiomeTypes = Lists.newArrayList(targetBiomeTypes);
+		this.targetSelector = targetSelector;
 	}
 
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		// If there is no looted entity(e.g chests), use the player instead
-		Entity entity = context.getLootedEntity();
-		if (entity == null)
+		Entity reference = targetSelector.get(context);
+		if (reference == null)
 		{
-			LOGGER.debug("No looted entity provided by LootContext, falling back to player.");
-			entity = context.getKillerPlayer();
-		}
-		if (entity == null)
-		{
-			LOGGER.debug("No player provided by LootContext. Unable to determine biome type, returning false.");
+			LOGGER.debug("LootContext has no {}. Unable to determine biome type, returning false.", targetSelector);
 			return false;
 		}
 		// The biome the entity is in
-		Biome biome = context.getWorld().getBiome(entity.getPosition());
+		Biome biome = context.getWorld().getBiome(reference.getPosition());
 		for (BiomeDictionary.Type type : targetBiomeTypes)
 		{
 			if (BiomeDictionary.hasType(biome, type)) return true;
@@ -76,6 +73,7 @@ public class InBiomeOfType implements LootCondition
 				typeNameArray.add(biomeType.getName());
 			}
 			json.add("types", typeNameArray);
+			json.add("target", condition.targetSelector.toJson());
 		}
 
 		@Override
@@ -90,7 +88,10 @@ public class InBiomeOfType implements LootCondition
 				if (biomeType == null) LOGGER.error("Unknown biome type '{}'", typeID);
 				else types.add(biomeType);
 			}
-			return new InBiomeOfType(types);
+			TargetSelector targetSelector = json.has("target")
+			    ? TargetSelector.fromJson(json, "target")
+			    : TargetSelector.OLD_BEHAVIOUR;
+			return new InBiomeOfType(types, targetSelector);
 		}
 	}
 }

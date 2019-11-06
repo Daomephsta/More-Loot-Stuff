@@ -5,9 +5,12 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 
 import leviathan143.morelootstuff.MoreLootStuff;
+import leviathan143.morelootstuff.loot.TargetSelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -19,27 +22,24 @@ public class InDimension implements LootCondition
 	private static final ResourceLocation ID = new ResourceLocation(MoreLootStuff.MODID, "in_dimension");
 	private static final Logger LOGGER = LogManager.getLogger(ID.toString());
 	private final int dimensionId;
+    public TargetSelector targetSelector;
 
-	public InDimension(int dimensionId)
+	public InDimension(int dimensionId, TargetSelector targetSelector)
 	{
 		this.dimensionId = dimensionId;
+        this.targetSelector = targetSelector;
 	}
 
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		Entity dimReference = context.getLootedEntity();
-		if (dimReference == null)
-		{
-			LOGGER.debug("No looted entity provided by LootContext, falling back to player.");
-			dimReference = context.getKillerPlayer();
-		}
-		if (dimReference == null)
-		{
-			LOGGER.debug("No player provided by LootContext. Unable to determine dimension, returning false.");
+	    Entity reference = targetSelector.get(context);
+        if (reference == null)
+        {
+            LOGGER.debug("LootContext has no {}. Unable to determine dimension, returning false.", targetSelector);
 			return false;
 		}
-		return dimReference.getEntityWorld().provider.getDimension() == dimensionId;
+		return reference.getEntityWorld().provider.getDimension() == dimensionId;
 	}
 
 	public static class Serialiser extends LootCondition.Serializer<InDimension>
@@ -50,15 +50,19 @@ public class InDimension implements LootCondition
 		}
 
 		@Override
-		public void serialize(JsonObject json, InDimension value, JsonSerializationContext context)
+		public void serialize(JsonObject json, InDimension condition, JsonSerializationContext context)
 		{
-			json.addProperty("dimID", value.dimensionId);
+			json.addProperty("dimID", condition.dimensionId);
+            json.add("target", condition.targetSelector.toJson());
 		}
 
 		@Override
 		public InDimension deserialize(JsonObject json, JsonDeserializationContext context)
 		{
-			return new InDimension(JsonUtils.getInt(json, "dimID"));
+            TargetSelector targetSelector = json.has("target")
+                ? TargetSelector.fromJson(json, "target")
+                : TargetSelector.OLD_BEHAVIOUR;
+			return new InDimension(JsonUtils.getInt(json, "dimID"), targetSelector);
 		}
 	}
 }

@@ -5,9 +5,12 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 
 import leviathan143.morelootstuff.MoreLootStuff;
+import leviathan143.morelootstuff.loot.TargetSelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -21,8 +24,9 @@ public class InBounds implements LootCondition
 	private static final int WORLD_SIZE = 30000000;
 	private final int minX, minY, minZ;
 	private final int maxX, maxY, maxZ;
+    private final TargetSelector targetSelector;
 
-	public InBounds(int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
+	public InBounds(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, TargetSelector targetSelector)
 	{
 		this.minX = minX;
 		this.minY = minY;
@@ -30,25 +34,21 @@ public class InBounds implements LootCondition
 		this.maxX = maxX;
 		this.maxY = maxY;
 		this.maxZ = maxZ;
+        this.targetSelector = targetSelector;
 	}
 
 	@Override
 	public boolean testCondition(Random rand, LootContext context)
 	{
-		Entity posReference = context.getLootedEntity();
-		if (posReference == null)
-		{
-			LOGGER.debug("No looted entity provided by LootContext, falling back to player.");
-			posReference = context.getKillerPlayer();
-		}
-		if (posReference == null)
-		{
-			LOGGER.debug("No player provided by LootContext. Unable to determine position, returning false.");
+	    Entity reference = targetSelector.get(context);
+        if (reference == null)
+        {
+            LOGGER.debug("LootContext has no {}. Unable to determine position, returning false.", targetSelector);
 			return false;
 		}
-		return (posReference.posX >= minX && posReference.posX <= maxX)
-				&& (posReference.posY >= minY && posReference.posY <= maxY)
-				&& (posReference.posZ >= minZ && posReference.posZ <= maxZ);
+		return (reference.posX >= minX && reference.posX <= maxX)
+				&& (reference.posY >= minY && reference.posY <= maxY)
+				&& (reference.posZ >= minZ && reference.posZ <= maxZ);
 	}
 
 	public static class Serialiser extends LootCondition.Serializer<InBounds>
@@ -59,27 +59,32 @@ public class InBounds implements LootCondition
 		}
 
 		@Override
-		public void serialize(JsonObject json, InBounds value, JsonSerializationContext context)
+		public void serialize(JsonObject json, InBounds condition, JsonSerializationContext context)
 		{
-			json.addProperty("minX", value.minX);
-			json.addProperty("minY", value.minY);
-			json.addProperty("minZ", value.minZ);
-			json.addProperty("maxX", value.maxX);
-			json.addProperty("maxY", value.maxY);
-			json.addProperty("maxZ", value.maxZ);
+			json.addProperty("minX", condition.minX);
+			json.addProperty("minY", condition.minY);
+			json.addProperty("minZ", condition.minZ);
+			json.addProperty("maxX", condition.maxX);
+			json.addProperty("maxY", condition.maxY);
+			json.addProperty("maxZ", condition.maxZ);
+            json.add("target", condition.targetSelector.toJson());
 		}
 
 		@Override
 		public InBounds deserialize(JsonObject json, JsonDeserializationContext context)
 		{
-			int minX = JsonUtils.getInt(json, "minX", -WORLD_SIZE), 
+			int minX = JsonUtils.getInt(json, "minX", -WORLD_SIZE),
 				minY = JsonUtils.getInt(json, "minY", 0),
 				minZ = JsonUtils.getInt(json, "minZ", -WORLD_SIZE);
-			
+
 			int	maxX = JsonUtils.getInt(json, "maxX", WORLD_SIZE),
-				maxY = JsonUtils.getInt(json, "maxY", 255), 
+				maxY = JsonUtils.getInt(json, "maxY", 255),
 				maxZ = JsonUtils.getInt(json, "maxZ", WORLD_SIZE);
-			return new InBounds(minX, minY, minZ, maxX, maxY, maxZ);
+
+            TargetSelector targetSelector = json.has("target")
+                ? TargetSelector.fromJson(json, "target")
+                : TargetSelector.OLD_BEHAVIOUR;
+			return new InBounds(minX, minY, minZ, maxX, maxY, maxZ, targetSelector);
 		}
 	}
 }
